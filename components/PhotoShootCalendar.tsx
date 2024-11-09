@@ -146,7 +146,7 @@ export default function PhotoShootCalendar() {
       <Dialog open={showAddNewEvent} onOpenChange={setShowAddNewEvent}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>新規予約登録</DialogTitle>
+            <DialogTitle>新規撮影依頼登録</DialogTitle>
           </DialogHeader>
           <EventForm
             event={{}}
