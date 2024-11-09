@@ -117,10 +117,6 @@ export default function PhotoShootCalendar() {
     <div className="container mx-auto p-4 max-w-7xl">
       <h1 className="text-3xl font-bold mb-6 text-center text-gray-800">加藤の撮影スケジュール</h1>
       
-      <div className="flex justify-between items-center mb-6">
-    
-
-      </div>
       
       <div className="bg-white shadow-lg rounded-lg overflow-hidden">
         <Calendar<PhotoShootEvent>
