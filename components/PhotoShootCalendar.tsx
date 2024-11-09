@@ -118,29 +118,8 @@ export default function PhotoShootCalendar() {
       <h1 className="text-3xl font-bold mb-6 text-center text-gray-800">加藤の撮影スケジュール</h1>
       
       <div className="flex justify-between items-center mb-6">
-        <ViewControls view={view} onViewChange={setView} />
-        <div className="flex items-center gap-2">
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={() => handleNavigate('PREV')}
-          >
-            <ChevronLeft className="h-4 w-4" />
-          </Button>
-          <Button
-            variant="outline"
-            onClick={() => handleNavigate('TODAY')}
-          >
-            Today
-          </Button>
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={() => handleNavigate('NEXT')}
-          >
-            <ChevronRight className="h-4 w-4" />
-          </Button>
-        </div>
+    
+
       </div>
       
       <div className="bg-white shadow-lg rounded-lg overflow-hidden">
