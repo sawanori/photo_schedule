@@ -105,7 +105,7 @@ export default function PhotoShootCalendar() {
       setSelectedEvent(null);
       setIsEditing(false);
       
-      console.log('イベントを更新しました');
+      console.log('イベントを更新しました！');
     } catch (error) {
       console.error('Failed to update event:', error);
     } finally {
