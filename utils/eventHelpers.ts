@@ -1,3 +1,5 @@
+import { PhotoShootEvent } from '@/types/event';
+
 export const cleanEventDataForUpdate = (event: Partial<PhotoShootEvent>) => {
   // 更新に必要なフィールドのみを抽出
   const {
