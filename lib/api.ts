@@ -48,6 +48,10 @@ export const api = {
 
   // イベントの更新
   async updateEvent(id: string, event: Partial<PhotoShootEvent>) {
+    // デバッグ用のログ
+    console.log('Updating event with ID:', id);
+    console.log('Update payload:', event);
+
     const { data, error } = await supabase
       .from('photo_shoot_events')
       .update(event)

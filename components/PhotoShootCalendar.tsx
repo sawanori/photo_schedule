@@ -88,10 +88,24 @@ export default function PhotoShootCalendar() {
     try {
       setIsSubmitting(true);
       
-      // Supabase APIを使用して更新
-      const updatedEventData = await api.updateEvent(selectedEvent.id, updatedEvent);
+      // 更新前のデータをログ出力
+      console.log('Selected event:', selectedEvent);
+      console.log('Updated event data:', updatedEvent);
+
+      // 不要なフィールドを除外
+      const cleanedEventData = {
+        title: updatedEvent.title,
+        tel: updatedEvent.tel,
+        shooting_date: updatedEvent.shooting_date,
+        start_time: updatedEvent.start_time,
+        end_time: updatedEvent.end_time,
+        location: updatedEvent.location,
+        notes: updatedEvent.notes,
+        photographer_id: updatedEvent.photographer_id
+      };
       
-      // 更新されたイベントデータでstateを更新
+      const updatedEventData = await api.updateEvent(selectedEvent.id, cleanedEventData);
+      
       setEvents(events.map(e => 
         e.id === selectedEvent.id 
           ? {
@@ -105,7 +119,7 @@ export default function PhotoShootCalendar() {
       setSelectedEvent(null);
       setIsEditing(false);
       
-      console.log('イベントを更新しました！');
+      console.log('イベントを更新しました');
     } catch (error) {
       console.error('Failed to update event:', error);
     } finally {
