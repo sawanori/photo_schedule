@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback, useMemo } from 'react';
+import { debounce } from 'lodash';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
@@ -16,7 +17,30 @@ interface EventFormProps {
 }
 
 export function EventForm({ event, onSubmit, onCancel, errors, isSubmitting }: EventFormProps) {
-  const [formData, setFormData] = useState<Partial<PhotoShootEvent>>(event);
+  const [formData, setFormData] = useState<Partial<PhotoShootEvent>>(event || {
+    title: '',
+    tel: '',
+    shooting_date: '',
+    start_time: '',
+    end_time: '',
+    location: '',
+    notes: ''
+  });
+
+  const handleInputChange = useCallback(
+    debounce((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      const { name, value } = e.target;
+      setFormData(prev => ({
+        ...prev,
+        [name]: value
+      }));
+    }, 100),
+    []
+  );
+
+  const formValues = useMemo(() => ({
+    ...formData
+  }), [formData]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,8 +54,9 @@ export function EventForm({ event, onSubmit, onCancel, errors, isSubmitting }: E
         <Label htmlFor="title" className="text-right">依頼者</Label>
         <Input
           id="title"
-          value={formData.title || ''}
-          onChange={e => setFormData({ ...formData, title: e.target.value })}
+          name="title"
+          defaultValue={formValues.title}
+          onChange={handleInputChange}
           className={`col-span-3 ${errors.title ? 'border-red-500' : ''}`}
         />
         {errors.title && <p className="text-red-500 text-sm col-start-2 col-span-3">{errors.title}</p>}
@@ -42,8 +67,9 @@ export function EventForm({ event, onSubmit, onCancel, errors, isSubmitting }: E
         <Label htmlFor="tel" className="text-right">連絡先（TEL）</Label>
         <Input
           id="tel"
-          value={formData.tel || ''}
-          onChange={e => setFormData({ ...formData, tel: e.target.value })}
+          name="tel"
+          defaultValue={formValues.tel}
+          onChange={handleInputChange}
           className={`col-span-3 ${errors.tel ? 'border-red-500' : ''}`}
         />
         {errors.tel && <p className="text-red-500 text-sm col-start-2 col-span-3">{errors.tel}</p>}
@@ -55,8 +81,9 @@ export function EventForm({ event, onSubmit, onCancel, errors, isSubmitting }: E
         <Input
           id="shooting_date"
           type="date"
-          value={formData.shooting_date || ''}
-          onChange={e => setFormData({ ...formData, shooting_date: e.target.value })}
+          name="shooting_date"
+          defaultValue={formValues.shooting_date}
+          onChange={handleInputChange}
           className={`col-span-3 ${errors.shooting_date ? 'border-red-500' : ''}`}
         />
         {errors.shooting_date && <p className="text-red-500 text-sm col-start-2 col-span-3">{errors.shooting_date}</p>}
@@ -69,16 +96,18 @@ export function EventForm({ event, onSubmit, onCancel, errors, isSubmitting }: E
           <Input
             id="start_time"
             type="time"
-            value={formData.start_time || ''}
-            onChange={e => setFormData({ ...formData, start_time: e.target.value })}
+            name="start_time"
+            defaultValue={formValues.start_time}
+            onChange={handleInputChange}
             className={`w-1/2 ${errors.start_time ? 'border-red-500' : ''}`}
           />
           <span>～</span>
           <Input
             id="end_time"
             type="time"
-            value={formData.end_time || ''}
-            onChange={e => setFormData({ ...formData, end_time: e.target.value })}
+            name="end_time"
+            defaultValue={formValues.end_time}
+            onChange={handleInputChange}
             className={`w-1/2 ${errors.end_time ? 'border-red-500' : ''}`}
           />
         </div>
@@ -94,8 +123,9 @@ export function EventForm({ event, onSubmit, onCancel, errors, isSubmitting }: E
         <Label htmlFor="location" className="text-right">場所</Label>
         <Input
           id="location"
-          value={formData.location || ''}
-          onChange={e => setFormData({ ...formData, location: e.target.value })}
+          name="location"
+          defaultValue={formValues.location}
+          onChange={handleInputChange}
           className="col-span-3"
         />
       </div>
@@ -105,8 +135,9 @@ export function EventForm({ event, onSubmit, onCancel, errors, isSubmitting }: E
         <Label htmlFor="notes" className="text-right">備考</Label>
         <Textarea
           id="notes"
-          value={formData.notes || ''}
-          onChange={e => setFormData({ ...formData, notes: e.target.value })}
+          name="notes"
+          defaultValue={formValues.notes}
+          onChange={handleInputChange}
           className="col-span-3"
         />
       </div>

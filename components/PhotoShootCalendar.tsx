@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { api } from '@/lib/api'; 
 import { Calendar, View } from 'react-big-calendar';
 import { localizer, calendarFormats, CalendarView } from '@/lib/calendar-config';
@@ -175,6 +175,27 @@ const handleDeleteEvent = async () => {
     }
     setCurrentDate(newDate);
   };
+
+  const handleFormSubmit = useCallback(async (formData: Partial<PhotoShootEvent>) => {
+    try {
+      setIsSubmitting(true);
+      const cleanedData = cleanEventDataForUpdate(formData);
+      
+      if (selectedEvent) {
+        await handleUpdateEvent(cleanedData);
+      } else {
+        await handleAddEvent(cleanedData);
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
+  }, [selectedEvent]);
+
+  const updateEventsList = useCallback((newEvent: PhotoShootEvent) => {
+    setEvents(prev => prev.map(event => 
+      event.id === newEvent.id ? newEvent : event
+    ));
+  }, []);
 
   return (
     <div className="container mx-auto p-4 max-w-7xl">
