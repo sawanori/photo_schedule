@@ -66,7 +66,7 @@ export function EventDetails({ event, onEdit, onDelete, isDeleting }: EventDetai
           variant="destructive" 
           disabled={isDeleting}
         >
-          {isDeleting ? '削除中...' : '削除'}
+          {isDeleting ? '削除中....' : '削除'}
         </Button>
       </div>
     </div>
