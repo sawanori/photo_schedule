@@ -3,7 +3,7 @@
 import { PhotoShootEvent } from '@/types/event';
 import { Button } from '@/components/ui/button';
 import { format } from 'date-fns';
-import { ja } from 'date-fns/locale'; // 日本語ロケールを追加
+import { ja } from 'date-fns/locale';
 
 interface EventDetailsProps {
   event: PhotoShootEvent;
@@ -45,7 +45,9 @@ export function EventDetails({ event, onEdit, onDelete, isDeleting }: EventDetai
 
         {/* 備考（任意） */}
         <div className="text-right font-semibold">備考:</div>
-        <div className="col-span-3 whitespace-pre-wrap">{event.notes || '未設定'}</div>
+        <div className="col-span-3 max-h-32 overflow-y-auto rounded border border-gray-200 p-2">
+          <div className="whitespace-pre-wrap">{event.notes || '未設定'}</div>
+        </div>
 
         {/* 登録日時 */}
         <div className="text-right font-semibold">登録日時:</div>
