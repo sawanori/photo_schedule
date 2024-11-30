@@ -13,7 +13,7 @@ import { Button } from '@/components/ui/button';
 import { PhotoShootEvent } from '@/types/event';
 import { ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-
+import { cleanEventDataForUpdate } from '@/utils/eventHelpers';
 type NavigateAction = 'PREV' | 'NEXT' | 'TODAY';
 
 export default function PhotoShootCalendar() {
@@ -83,29 +83,18 @@ export default function PhotoShootCalendar() {
     }
   };
 
- const handleUpdateEvent = async (updatedEvent: Partial<PhotoShootEvent>) => {
-  if (selectedEvent && validateForm(updatedEvent)) {
-    try {
-      setIsSubmitting(true);
+  const handleUpdateEvent = async (updatedEvent: Partial<PhotoShootEvent>) => {
+    if (selectedEvent && validateForm(updatedEvent)) {
+      try {
+        setIsSubmitting(true);
       
-      // 更新前のデータをログ出力
-      console.log('Selected event:', selectedEvent);
-      console.log('Updated event data:', updatedEvent);
 
-      // 不要なフィールドを除外
-      const cleanedEventData = {
-        title: updatedEvent.title,
-        tel: updatedEvent.tel,
-        shooting_date: updatedEvent.shooting_date,
-        start_time: updatedEvent.start_time,
-        end_time: updatedEvent.end_time,
-        location: updatedEvent.location,
-        notes: updatedEvent.notes,
-        photographer_id: updatedEvent.photographer_id
-      };
+        const cleanedData = cleanEventDataForUpdate(updatedEvent);
+        console.log('Cleaned update data:', cleanedData); 
+      // Supabase APIを使用して更新
+      const updatedEventData = await api.updateEvent(selectedEvent.id, cleanedData);
       
-      const updatedEventData = await api.updateEvent(selectedEvent.id, cleanedEventData);
-      
+      // 更新されたイベントデータでstateを更新
       setEvents(events.map(e => 
         e.id === selectedEvent.id 
           ? {
@@ -119,7 +108,7 @@ export default function PhotoShootCalendar() {
       setSelectedEvent(null);
       setIsEditing(false);
       
-      console.log('イベントを更新しました');
+      console.log('イベントを更新しました！');
     } catch (error) {
       console.error('Failed to update event:', error);
     } finally {

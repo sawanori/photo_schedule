@@ -48,29 +48,37 @@ export const api = {
 
   // イベントの更新
   async updateEvent(id: string, event: Partial<PhotoShootEvent>) {
-    // デバッグ用のログ
-    console.log('Updating event with ID:', id);
-    console.log('Update payload:', event);
-
-    const { data, error } = await supabase
-      .from('photo_shoot_events')
-      .update(event)
-      .eq('id', id)
-      .select(`
-        *,
-        photographers!fk_photographer (
-          id,
-          name,
-          email,
-          phone
-        )
-      `);
+    console.log('API received update data:', event); // デバッグログ
     
-    if (error) {
-      console.error('Error updating event:', error);
+    // 送信データから start と end を除外
+    const { start, end, ...updateData } = event as any;
+    
+    try {
+      const { data, error } = await supabase
+        .from('photo_shoot_events')
+        .update(updateData)
+        .eq('id', id)
+        .select(`
+          *,
+          photographers!fk_photographer (
+            id,
+            name,
+            email,
+            phone
+          )
+        `);
+      
+      if (error) {
+        console.error('Supabase update error:', error);
+        throw error;
+      }
+      
+      console.log('Update successful:', data); // デバッグログ
+      return data[0];
+    } catch (error) {
+      console.error('Error in updateEvent:', error);
       throw error;
     }
-    return data[0];
   },
 
   // イベントの削除
