@@ -209,6 +209,7 @@ const handleDeleteEvent = async () => {
         <div className="bg-white shadow-lg rounded-lg overflow-hidden">
           <Calendar<PhotoShootEvent>
             localizer={localizer}
+            culture="ja"
             events={events}
             startAccessor={(event: PhotoShootEvent) => 
               new Date(`${event.shooting_date}T${event.start_time}`)

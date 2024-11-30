@@ -4,11 +4,13 @@ import parse from 'date-fns/parse';
 import startOfWeek from 'date-fns/startOfWeek';
 import getDay from 'date-fns/getDay';
 import enUS from 'date-fns/locale/en-US';
+import ja from 'date-fns/locale/ja'; 
 
 export type CalendarView = View;
 
 const locales = {
   'en-US': enUS,
+  'ja': ja, 
 };
 
 export const localizer = dateFnsLocalizer({
